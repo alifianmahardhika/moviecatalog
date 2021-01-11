@@ -40,10 +40,10 @@ class DetailActivity : AppCompatActivity() {
                     this,
                     ViewModelProvider.NewInstanceFactory()
                 )[TvViewModel::class.java]
-                val movies = movieVM.getMovies()
+                val movies = movieVM.getDummyMovies()
                 val tvs = tvVm.getTvs()
                 for (movie in movies) {
-                    if (movie.movieId == itemId) {
+                    if (movie.movieId == itemId.toInt()) {
                         populateMovie(movie)
                     }
                 }
