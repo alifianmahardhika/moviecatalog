@@ -9,7 +9,8 @@ import retrofit2.Response
 
 class RemoteDataSource private constructor(private val apiConfig: ApiConfig) {
     companion object {
-        private const val LIST_ID: String = "7070136"
+        private const val LIST_MOVIE_ID: String = "7070136"
+        private const val LIST_TV_ID: String = "7070818"
         private const val TAG = "RemoteDataSource"
 
         @Volatile
@@ -21,7 +22,7 @@ class RemoteDataSource private constructor(private val apiConfig: ApiConfig) {
     }
 
     fun getRemoteMovies(callback: LoadMoviesCallback) {
-        val client = apiConfig.getApiService().getMoviesList(LIST_ID)
+        val client = apiConfig.getApiService().getList(LIST_MOVIE_ID)
         client.enqueue(object : Callback<ResponseMovies> {
             override fun onResponse(
                 call: Call<ResponseMovies>,
@@ -43,7 +44,34 @@ class RemoteDataSource private constructor(private val apiConfig: ApiConfig) {
         })
     }
 
+    fun getRemoteTv(callback: LoadTvCallback) {
+        val client = apiConfig.getApiService().getList(LIST_TV_ID)
+        client.enqueue(object : Callback<ResponseMovies> {
+            override fun onResponse(
+                call: Call<ResponseMovies>,
+                response: Response<ResponseMovies>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        callback.onAllTvReceived(it.items)
+                    }
+                } else {
+                    Log.e(TAG, "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseMovies>, t: Throwable) {
+                Log.e(TAG, "onFailure: ${t.message.toString()}")
+            }
+
+        })
+    }
+
     interface LoadMoviesCallback {
         fun onAllMoviesReceived(responseMovies: List<ItemsItem>)
+    }
+
+    interface LoadTvCallback {
+        fun onAllTvReceived(responseTv: List<ItemsItem>)
     }
 }

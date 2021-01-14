@@ -8,9 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalog.databinding.FragmentTvBinding
+import com.example.moviecatalog.ui.movies.viewmodel.ViewModelFactory
 
 class TvFragment : Fragment() {
-    lateinit var fragmentTvBinding: FragmentTvBinding
+    private lateinit var fragmentTvBinding: FragmentTvBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,13 +26,15 @@ class TvFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-            val viewModel = ViewModelProvider(
-                this,
-                ViewModelProvider.NewInstanceFactory()
-            )[TvViewModel::class.java]
-            val tvs = viewModel.getTvs()
+            val factory = ViewModelFactory.getInstance()
+            val viewModel = ViewModelProvider(this, factory)[TvViewModel::class.java]
             val tvAdapter = TvAdapter()
-            tvAdapter.setTvs(tvs)
+            fragmentTvBinding.progressBar.visibility = View.VISIBLE
+            viewModel.getTvs().observe(this, { tvs ->
+                fragmentTvBinding.progressBar.visibility = View.GONE
+                tvAdapter.setTvs(tvs)
+                tvAdapter.notifyDataSetChanged()
+            })
 
             with(fragmentTvBinding.rvTv) {
                 layoutManager = LinearLayoutManager(context)

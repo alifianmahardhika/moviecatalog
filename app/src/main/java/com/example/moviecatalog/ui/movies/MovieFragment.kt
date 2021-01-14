@@ -25,7 +25,7 @@ class MovieFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
 
-            val factory = ViewModelFactory.getInstance(requireActivity())
+            val factory = ViewModelFactory.getInstance()
             val viewModel = ViewModelProvider(this, factory)[MoviesViewModel::class.java]
             val movieAdapter = MovieAdapter()
             fragmentMovieBinding.progressBar.visibility = View.VISIBLE

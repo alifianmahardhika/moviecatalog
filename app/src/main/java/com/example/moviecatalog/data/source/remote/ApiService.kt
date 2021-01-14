@@ -8,7 +8,7 @@ import retrofit2.http.Path
 
 interface ApiService {
     @GET("list/{list_id}?api_key=" + BuildConfig.TMDB_TOKEN)
-    fun getMoviesList(
-        @Path("list_id") list_id : String
+    fun getList(
+        @Path("list_id") list_id: String
     ): Call<ResponseMovies>
 }
