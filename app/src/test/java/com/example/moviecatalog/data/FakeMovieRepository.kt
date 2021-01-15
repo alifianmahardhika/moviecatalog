@@ -2,7 +2,8 @@ package com.example.moviecatalog.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.moviecatalog.data.source.MovieDataSource
+import com.example.moviecatalog.data.source.local.entity.MovieEntity
+import com.example.moviecatalog.data.source.local.entity.TvEntity
 import com.example.moviecatalog.data.source.remote.RemoteDataSource
 import com.example.moviecatalog.data.source.remote.response.ItemsItem
 

@@ -1,7 +1,7 @@
 package com.example.moviecatalog.utils
 
-import com.example.moviecatalog.data.MovieEntity
-import com.example.moviecatalog.data.TvEntity
+import com.example.moviecatalog.data.source.local.entity.MovieEntity
+import com.example.moviecatalog.data.source.local.entity.TvEntity
 import com.example.moviecatalog.data.source.remote.response.ItemsItem
 
 object DataDummy {

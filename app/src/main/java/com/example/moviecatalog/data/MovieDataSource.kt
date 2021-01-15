@@ -1,8 +1,8 @@
-package com.example.moviecatalog.data.source
+package com.example.moviecatalog.data
 
 import androidx.lifecycle.LiveData
-import com.example.moviecatalog.data.MovieEntity
-import com.example.moviecatalog.data.TvEntity
+import com.example.moviecatalog.data.source.local.entity.MovieEntity
+import com.example.moviecatalog.data.source.local.entity.TvEntity
 
 interface MovieDataSource {
     fun getAllMovies(): LiveData<List<MovieEntity>>

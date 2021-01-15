@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.moviecatalog.R
-import com.example.moviecatalog.data.MovieEntity
+import com.example.moviecatalog.data.source.local.entity.MovieEntity
 import com.example.moviecatalog.databinding.ItemsMovieBinding
 import com.example.moviecatalog.ui.detail.DetailActivity
 

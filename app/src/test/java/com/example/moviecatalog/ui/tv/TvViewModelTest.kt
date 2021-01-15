@@ -3,8 +3,8 @@ package com.example.moviecatalog.ui.tv
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.example.moviecatalog.data.TvEntity
-import com.example.moviecatalog.data.source.MovieRepository
+import com.example.moviecatalog.data.MovieRepository
+import com.example.moviecatalog.data.source.local.entity.TvEntity
 import com.example.moviecatalog.utils.DataDummy
 import com.nhaarman.mockitokotlin2.verify
 import junit.framework.TestCase.assertEquals

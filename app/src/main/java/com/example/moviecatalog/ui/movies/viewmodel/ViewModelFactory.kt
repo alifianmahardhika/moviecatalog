@@ -2,7 +2,7 @@ package com.example.moviecatalog.ui.movies.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.moviecatalog.data.source.MovieRepository
+import com.example.moviecatalog.data.MovieRepository
 import com.example.moviecatalog.ui.movies.MoviesViewModel
 import com.example.moviecatalog.ui.movies.di.Injection
 import com.example.moviecatalog.ui.tv.TvViewModel
