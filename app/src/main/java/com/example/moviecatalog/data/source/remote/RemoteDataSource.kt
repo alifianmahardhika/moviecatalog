@@ -1,6 +1,8 @@
 package com.example.moviecatalog.data.source.remote
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.moviecatalog.data.source.remote.response.ItemsItem
 import com.example.moviecatalog.data.source.remote.response.ResponseMovies
 import retrofit2.Call
@@ -21,8 +23,9 @@ class RemoteDataSource private constructor(private val apiConfig: ApiConfig) {
         }
     }
 
-    fun getRemoteMovies(callback: LoadMoviesCallback) {
+    fun getRemoteMovies(): LiveData<ApiResponse<List<ItemsItem>>> {
         val client = apiConfig.getApiService().getList(LIST_MOVIE_ID)
+        val resultMovie = MutableLiveData<ApiResponse<List<ItemsItem>>>()
         client.enqueue(object : Callback<ResponseMovies> {
             override fun onResponse(
                 call: Call<ResponseMovies>,
@@ -30,7 +33,7 @@ class RemoteDataSource private constructor(private val apiConfig: ApiConfig) {
             ) {
                 if (response.isSuccessful) {
                     response.body()?.let {
-                        callback.onAllMoviesReceived(it.items)
+                        resultMovie.value = ApiResponse.success(it.items)
                     }
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
@@ -42,10 +45,12 @@ class RemoteDataSource private constructor(private val apiConfig: ApiConfig) {
             }
 
         })
+        return resultMovie
     }
 
-    fun getRemoteTv(callback: LoadTvCallback) {
+    fun getRemoteTv(): LiveData<ApiResponse<List<ItemsItem>>> {
         val client = apiConfig.getApiService().getList(LIST_TV_ID)
+        val resultTv = MutableLiveData<ApiResponse<List<ItemsItem>>>()
         client.enqueue(object : Callback<ResponseMovies> {
             override fun onResponse(
                 call: Call<ResponseMovies>,
@@ -53,7 +58,7 @@ class RemoteDataSource private constructor(private val apiConfig: ApiConfig) {
             ) {
                 if (response.isSuccessful) {
                     response.body()?.let {
-                        callback.onAllTvReceived(it.items)
+                        resultTv.value = ApiResponse.success(it.items)
                     }
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
@@ -65,6 +70,7 @@ class RemoteDataSource private constructor(private val apiConfig: ApiConfig) {
             }
 
         })
+        return resultTv
     }
 
     interface LoadMoviesCallback {
