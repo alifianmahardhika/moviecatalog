@@ -3,9 +3,10 @@ package com.example.moviecatalog.ui.tv
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import com.example.moviecatalog.data.MovieRepository
 import com.example.moviecatalog.data.source.local.entity.TvEntity
-import com.example.moviecatalog.utils.DataDummy
+import com.example.moviecatalog.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
@@ -26,27 +27,32 @@ class TvViewModelTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var repository: MovieRepository
+    private lateinit var movieRepository: MovieRepository
 
     @Mock
-    private lateinit var observer: Observer<List<TvEntity>>
+    private lateinit var observer: Observer<Resource<PagedList<TvEntity>>>
+
+    @Mock
+    private lateinit var pagedList: PagedList<TvEntity>
 
     @Before
     fun setUp() {
-        viewModel = TvViewModel(repository)
+        viewModel = TvViewModel(movieRepository)
     }
 
     @Test
     fun getTv() {
-        val dummyTv = DataDummy.generateDummyTv()
-        val tvs = MutableLiveData<List<TvEntity>>()
+        val dummyTv = Resource.success(pagedList)
+
+        `when`(dummyTv.data?.size).thenReturn(11)
+        val tvs = MutableLiveData<Resource<PagedList<TvEntity>>>()
         tvs.value = dummyTv
 
-        `when`(repository.getAllTv()).thenReturn(tvs)
-        val tv = viewModel.getTvs().value
-        verify(repository).getAllTv()
-        assertNotNull(tv)
-        assertEquals(11, tv?.size)
+        `when`(movieRepository.getAllTv()).thenReturn(tvs)
+        val tventities = viewModel.getTvs().value?.data
+        verify(movieRepository).getAllTv()
+        assertNotNull(tventities)
+        assertEquals(11, tventities?.size)
 
         viewModel.getTvs().observeForever(observer)
         verify(observer).onChanged(dummyTv)
