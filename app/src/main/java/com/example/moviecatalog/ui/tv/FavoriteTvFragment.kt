@@ -7,19 +7,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moviecatalog.databinding.FragmentTvBinding
+import com.example.moviecatalog.databinding.FragmentFavoriteTvBinding
 import com.example.moviecatalog.viewmodel.ViewModelFactory
 
 class FavoriteTvFragment : Fragment() {
-    private lateinit var fragmentTvBinding: FragmentTvBinding
+    private lateinit var favoriteTvBinding: FragmentFavoriteTvBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentTvBinding = FragmentTvBinding.inflate(inflater, container, false)
-        return fragmentTvBinding.root
+        favoriteTvBinding = FragmentFavoriteTvBinding.inflate(inflater, container, false)
+        return favoriteTvBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -29,16 +29,16 @@ class FavoriteTvFragment : Fragment() {
             val factory = ViewModelFactory.getInstance(requireActivity())
             val viewModel = ViewModelProvider(this, factory)[TvViewModel::class.java]
             val tvAdapter = TvAdapter()
-            fragmentTvBinding.progressBar.visibility = View.VISIBLE
+            favoriteTvBinding.progressBar.visibility = View.VISIBLE
             viewModel.getFavoriteTv().observe(this, { tvs ->
                 if (tvs != null) {
-                    fragmentTvBinding.progressBar.visibility = View.GONE
+                    favoriteTvBinding.progressBar.visibility = View.GONE
                     tvAdapter.submitList(tvs)
                     tvAdapter.notifyDataSetChanged()
                 }
             })
 
-            with(fragmentTvBinding.rvTv) {
+            with(favoriteTvBinding.rvFavoriteTv) {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 adapter = tvAdapter
