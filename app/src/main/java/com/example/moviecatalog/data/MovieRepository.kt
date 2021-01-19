@@ -37,7 +37,7 @@ class MovieRepository private constructor(
             }
 
             override fun shouldFetch(data: List<MovieEntity>?): Boolean {
-                return true
+                return data == null || data.isEmpty()
             }
 
             override fun createCall(): LiveData<ApiResponse<List<ItemsItem>>> {
@@ -99,7 +99,7 @@ class MovieRepository private constructor(
             }
 
             override fun shouldFetch(data: List<TvEntity>?): Boolean {
-                return true
+                return data == null || data.isEmpty()
             }
 
             override fun createCall(): LiveData<ApiResponse<List<ItemsItem>>> {

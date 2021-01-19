@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.moviecatalog.R
+import com.example.moviecatalog.ui.movies.FavoriteMovieFragment
 import com.example.moviecatalog.ui.movies.MovieFragment
+import com.example.moviecatalog.ui.tv.FavoriteTvFragment
 import com.example.moviecatalog.ui.tv.TvFragment
 
 class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager) :
@@ -14,7 +16,11 @@ class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager) :
 
     companion object {
         @StringRes
-        private val TAB_TITLES = intArrayOf(R.string.movie_fr_title, R.string.tv_fr_title)
+        private val TAB_TITLES = intArrayOf(
+            R.string.movie_fr_title,
+            R.string.tv_fr_title,
+            R.string.movie_fav_title, R.string.tv_fav_title
+        )
     }
 
     override fun getCount(): Int {
@@ -25,6 +31,8 @@ class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager) :
         return when (position) {
             0 -> MovieFragment()
             1 -> TvFragment()
+            2 -> FavoriteMovieFragment()
+            3 -> FavoriteTvFragment()
             else -> Fragment()
         }
     }

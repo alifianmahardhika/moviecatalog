@@ -10,4 +10,6 @@ class MoviesViewModel(private val movieRepository: MovieRepository) : ViewModel(
     fun getMovies(): LiveData<Resource<List<MovieEntity>>> = movieRepository.getAllMovies()
     fun getDetailMovie(itemId: Int): LiveData<Resource<MovieEntity>> =
         movieRepository.getDetailMovie(itemId)
+
+    fun getFavoriteMovies(): LiveData<List<MovieEntity>> = movieRepository.getFavoriteMovie()
 }
