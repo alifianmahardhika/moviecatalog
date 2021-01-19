@@ -44,6 +44,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailActivity::class.java)
                     intent.putExtra(DetailActivity.EXTRA_CONTENT, movie.movieId)
+                    intent.putExtra(DetailActivity.EXTRA_TAG, 0)
                     itemView.context.startActivity(intent)
                 }
                 Glide.with(itemView.context)

@@ -23,17 +23,17 @@ interface MovieDao {
     @Query("SELECT * FROM movietable WHERE movieId = :movieId")
     fun getMovieById(movieId: Int): LiveData<MovieEntity>
 
-    @Query("SELECT * FROM tvtable WHERE tvId = :tvId")
-    fun getTvById(tvId: Int): LiveData<TvEntity>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTvs(tvs: List<TvEntity>)
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMovies(movies: List<MovieEntity>)
 
     @Update
     fun updateMovie(movie: MovieEntity)
+
+    @Query("SELECT * FROM tvtable WHERE tvId = :tvId")
+    fun getTvById(tvId: Int): LiveData<TvEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertTvs(tvs: List<TvEntity>)
 
     @Update
     fun updateTv(tv: TvEntity)

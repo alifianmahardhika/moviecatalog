@@ -8,4 +8,5 @@
     <string name="tv_fr_title">TV Show</string>
     <string name="movie_fav_title">Movie Favorite</string>
     <string name="tv_fav_title">Favorite Tv Show</string>
+    <string name="menu_favorite">Favorite</string>
 </resources>

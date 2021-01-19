@@ -43,6 +43,7 @@ class TvAdapter : RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailActivity::class.java)
                     intent.putExtra(DetailActivity.EXTRA_CONTENT, tv.tvId)
+                    intent.putExtra(DetailActivity.EXTRA_TAG, 1)
                     itemView.context.startActivity(intent)
                 }
                 Glide.with(itemView.context)
