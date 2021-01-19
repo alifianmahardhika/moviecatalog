@@ -1,6 +1,7 @@
 package com.example.moviecatalog.data.source.local
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import com.example.moviecatalog.data.source.local.entity.MovieEntity
 import com.example.moviecatalog.data.source.local.entity.TvEntity
 import com.example.moviecatalog.data.source.local.room.MovieDao
@@ -12,14 +13,14 @@ class LocalDataSource private constructor(private val mMovieDao: MovieDao) {
             INSTANCE ?: LocalDataSource(movieDao)
     }
 
-    fun getAllMovies(): LiveData<List<MovieEntity>> = mMovieDao.getMovies()
-    fun getAllTvs(): LiveData<List<TvEntity>> = mMovieDao.getTvs()
+    fun getAllMovies(): DataSource.Factory<Int, MovieEntity> = mMovieDao.getMovies()
+    fun getAllTvs(): DataSource.Factory<Int, TvEntity> = mMovieDao.getTvs()
     fun getDetailMovie(movieId: Int): LiveData<MovieEntity> = mMovieDao.getMovieById(movieId)
     fun getDetailTv(tvId: Int): LiveData<TvEntity> = mMovieDao.getTvById(tvId)
     fun insertMovies(movies: List<MovieEntity>) = mMovieDao.insertMovies(movies)
     fun insertTvs(tvs: List<TvEntity>) = mMovieDao.insertTvs(tvs)
-    fun getFavoriteMovies(): LiveData<List<MovieEntity>> = mMovieDao.getFavoriteMovies()
-    fun getFavoriteTvs(): LiveData<List<TvEntity>> = mMovieDao.getFavoriteTvs()
+    fun getFavoriteMovies(): DataSource.Factory<Int, MovieEntity> = mMovieDao.getFavoriteMovies()
+    fun getFavoriteTvs(): DataSource.Factory<Int, TvEntity> = mMovieDao.getFavoriteTvs()
     fun setFavoriteMovie(movie: MovieEntity, newState: Boolean) {
         movie.isFavorite = newState
         mMovieDao.updateMovie(movie)

@@ -4,14 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.paging.PagedList
 import com.example.moviecatalog.data.MovieRepository
 import com.example.moviecatalog.data.source.local.entity.TvEntity
 import com.example.moviecatalog.vo.Resource
 
 class TvViewModel(private val movieRepository: MovieRepository) : ViewModel() {
-    fun getTvs(): LiveData<Resource<List<TvEntity>>> = movieRepository.getAllTv()
-    fun getDetailTv(itemId: Int): LiveData<Resource<TvEntity>> = movieRepository.getDetailTv(itemId)
-    fun getFavoriteTv(): LiveData<List<TvEntity>> = movieRepository.getFavoriteTv()
+    fun getTvs(): LiveData<Resource<PagedList<TvEntity>>> = movieRepository.getAllTv()
+    fun getFavoriteTv(): LiveData<PagedList<TvEntity>> = movieRepository.getFavoriteTv()
     val tvId = MutableLiveData<Int>()
 
     fun setTvId(Id: Int) {
