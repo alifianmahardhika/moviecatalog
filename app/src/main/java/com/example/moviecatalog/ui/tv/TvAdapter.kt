@@ -37,6 +37,7 @@ class TvAdapter : RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
     class TvViewHolder(private val binding: ItemsTvBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(tv: TvEntity) {
+            val basePoster = "https://image.tmdb.org/t/p/w500"
             with(binding) {
                 tvTitle.text = tv.title
                 itemView.setOnClickListener {
@@ -45,7 +46,7 @@ class TvAdapter : RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
                     itemView.context.startActivity(intent)
                 }
                 Glide.with(itemView.context)
-                    .load(tv.poster)
+                    .load(basePoster + tv.poster)
                     .apply(
                         RequestOptions.placeholderOf(R.drawable.ic_loading)
                             .error(R.drawable.ic_error)

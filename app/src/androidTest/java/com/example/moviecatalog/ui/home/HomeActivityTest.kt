@@ -6,15 +6,15 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.example.moviecatalog.R
-import com.example.moviecatalog.utils.Data
+import com.example.moviecatalog.utils.DataDummy
 import org.junit.Before
 import org.junit.Test
 
 class HomeActivityTest {
-    private val movies = Data.generateMoviesData()
-    private val tvs = Data.generateTvsData()
+    private val dummyMovies = DataDummy.generateDummyMovie()
 
     @Before
     fun setup() {
@@ -26,7 +26,7 @@ class HomeActivityTest {
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_movie)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                movies.size
+                dummyMovies.size
             )
         )
     }
@@ -34,15 +34,23 @@ class HomeActivityTest {
 
     @Test
     fun loadDetailMovie() {
+        delay()
         onView(withId(R.id.rv_movie)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
                 click()
             )
         )
+        delay()
         onView(withId(R.id.text_title)).check(matches(isDisplayed()))
-        onView(withId(R.id.text_title)).check(matches(withText(movies[0].title)))
         onView(withId(R.id.text_desc)).check(matches(isDisplayed()))
-        onView(withId(R.id.text_desc)).check(matches(withText(movies[0].description)))
+    }
+
+    private fun delay() {
+        try {
+            Thread.sleep(5000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
     }
 }
