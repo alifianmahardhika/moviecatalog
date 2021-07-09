@@ -12,11 +12,25 @@ import com.example.moviecatalog.data.source.remote.response.ItemsItem
 import com.example.moviecatalog.utils.AppExecutors
 import com.example.moviecatalog.vo.Resource
 
-class FakeMovieRepository constructor(
+class MovieRepository private constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
-) : MovieDataSource {
+) :
+    MovieDataSource {
+    companion object {
+        @Volatile
+        private var instance: MovieRepository? = null
+
+        fun getInstance(
+            remoteData: RemoteDataSource,
+            localData: LocalDataSource,
+            appExecutors: AppExecutors
+        ): MovieRepository =
+            instance ?: synchronized(this) {
+                instance ?: MovieRepository(remoteData, localData, appExecutors)
+            }
+    }
 
     private val config = PagedList.Config.Builder()
         .setEnablePlaceholders(false)
@@ -56,7 +70,35 @@ class FakeMovieRepository constructor(
     }
 
     override fun getDetailMovie(movieId: Int): LiveData<Resource<MovieEntity>> {
-        TODO("Not yet implemented")
+        return object : NetworkBoundResource<MovieEntity, List<ItemsItem>>(appExecutors) {
+            public override fun loadFromDB(): LiveData<MovieEntity> {
+                return localDataSource.getDetailMovie(movieId)
+            }
+
+            public override fun shouldFetch(data: MovieEntity?): Boolean {
+                return false
+            }
+
+            public override fun createCall(): LiveData<ApiResponse<List<ItemsItem>>> {
+                return remoteDataSource.getRemoteMovies()
+            }
+
+            public override fun saveCallResult(data: List<ItemsItem>) {
+                val list = ArrayList<MovieEntity>()
+                for (response in data) {
+                    if (response.id == movieId) {
+                        val movie = MovieEntity(
+                            response.id,
+                            response.title,
+                            response.overview,
+                            response.posterPath
+                        )
+                        list.add(movie)
+                    }
+                }
+                localDataSource.insertMovies(list)
+            }
+        }.asLiveData()
     }
 
     override fun getAllTv(): LiveData<Resource<PagedList<TvEntity>>> {
@@ -90,22 +132,50 @@ class FakeMovieRepository constructor(
     }
 
     override fun getDetailTv(tvId: Int): LiveData<Resource<TvEntity>> {
-        TODO("Not yet implemented")
+        return object : NetworkBoundResource<TvEntity, List<ItemsItem>>(appExecutors) {
+            public override fun loadFromDB(): LiveData<TvEntity> {
+                return localDataSource.getDetailTv(tvId)
+            }
+
+            public override fun shouldFetch(data: TvEntity?): Boolean {
+                return false
+            }
+
+            public override fun createCall(): LiveData<ApiResponse<List<ItemsItem>>> {
+                return remoteDataSource.getRemoteTv()
+            }
+
+            public override fun saveCallResult(data: List<ItemsItem>) {
+                val list = ArrayList<TvEntity>()
+                for (response in data) {
+                    if (response.id == tvId) {
+                        val tv = TvEntity(
+                            response.id,
+                            response.name,
+                            response.overview,
+                            response.posterPath
+                        )
+                        list.add(tv)
+                    }
+                }
+                localDataSource.insertTvs(list)
+            }
+        }.asLiveData()
     }
 
     override fun getFavoriteMovie(): LiveData<PagedList<MovieEntity>> {
-        TODO("Not yet implemented")
+        return LivePagedListBuilder(localDataSource.getFavoriteMovies(), config).build()
     }
 
     override fun getFavoriteTv(): LiveData<PagedList<TvEntity>> {
-        TODO("Not yet implemented")
+        return LivePagedListBuilder(localDataSource.getFavoriteTvs(), config).build()
     }
 
     override fun setFavoriteMovie(movie: MovieEntity, state: Boolean) {
-        TODO("Not yet implemented")
+        return appExecutors.diskIO().execute { localDataSource.setFavoriteMovie(movie, state) }
     }
 
     override fun setFavoriteTv(tv: TvEntity, state: Boolean) {
-        TODO("Not yet implemented")
+        return appExecutors.diskIO().execute { localDataSource.setFavoriteTv(tv, state) }
     }
 }

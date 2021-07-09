@@ -1,10 +1,11 @@
-package com.example.moviecatalog.ui.movies.viewmodel
+package com.example.moviecatalog.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.moviecatalog.data.source.MovieRepository
+import com.example.moviecatalog.data.MovieRepository
+import com.example.moviecatalog.di.Injection
 import com.example.moviecatalog.ui.movies.MoviesViewModel
-import com.example.moviecatalog.ui.movies.di.Injection
 import com.example.moviecatalog.ui.tv.TvViewModel
 
 class ViewModelFactory private constructor(private val mMovieRepository: MovieRepository) :
@@ -13,9 +14,9 @@ class ViewModelFactory private constructor(private val mMovieRepository: MovieRe
         @Volatile
         private var instance: ViewModelFactory? = null
 
-        fun getInstance(): ViewModelFactory =
+        fun getInstance(context: Context): ViewModelFactory =
             instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(Injection.provideRepository())
+                instance ?: ViewModelFactory(Injection.provideRepository(context))
             }
     }
 
